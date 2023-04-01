@@ -9,6 +9,7 @@ import yaml
 
 from prompt_toolkit import PromptSession, HTML
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.shortcuts import clear
 from rich.console import Console
 from rich.markup import escape
 
@@ -87,7 +88,11 @@ def start_prompt(session, config):
         raise EOFError
     if message.lower() == "":
         raise KeyboardInterrupt
-
+    elif message.lower() == "/clear":
+        clear()
+        console.print("ChatGPT CLI", style="bold")
+        console.print(f"Model in use: [green bold]{config['model']}")
+        raise KeyboardInterrupt
     messages.append({"role": "user", "content": message})
 
     body = {"model": config["model"], "messages": messages}
